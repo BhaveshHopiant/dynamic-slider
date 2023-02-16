@@ -1,0 +1,201 @@
+<style>
+  img{
+    max-width:100%;
+  }
+  .image-text-section{
+    padding:80px 0;
+  }
+  .container{
+    max-width:1240px;
+    width:100%;
+    margin:0 auto;
+    display:block;
+    padding:0 15px;
+  }
+  .image-text-section h2 {
+      text-align: center;
+      margin: 0 0 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: normal;
+      font-size: 48px;
+  }
+  .image-text-slider {
+      padding: 0 15px;
+  }
+  .image-text {
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+  }
+  .image-text-section .text {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border: 1px solid #fff;
+      padding: 15px;
+    z-index:2;
+  }
+  .image-text:after {
+      content: '';
+      position: absolute;
+      background: rgba(0,0,0,0.3);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+  }
+  .image-text-section h3 {
+      margin: 20px 0 10px;
+      font-weight: bold;
+      letter-spacing: normal;
+      font-size: 24px;
+      color:#fff;
+  }
+  .image-text-section p{
+    margin:0 0 5px;
+    font-size:14px;
+    line-height:24px;
+    color:#fff;
+  }
+  .image-text-section a{
+    color:#fff;
+  }
+  ul.slick-dots {
+      margin: 30px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+  }
+  ul.slick-dots li button {
+      font-size: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border: 1px solid #000;
+      height: 15px;
+      width: 15px;
+      border-radius: 50%;
+      background: transparent;
+  }
+  ul.slick-dots li button[aria-label="1 of 1"]{
+    display:none;
+  }
+  ul.slick-dots li.slick-active button{
+    background:#000;
+  }
+  @media screen and (max-width:767px){
+    .image-text-section{
+      padding:40px 0;
+    }
+    .image-text-section h2 {
+      font-size:36px;
+    }
+  }
+</style>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $('.sliders').slick({
+        slidesToShow: 3,
+        dots: true,
+        arrows: false,
+        slidesToScroll: 1,
+        autoplay: false,
+        infinite: false,
+        autoplaySpeed: 2000,
+        responsive: [
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+        ]
+      });
+    });
+  </script>
+
+<section class="image-text-section">
+    <div class="container">
+        <h2>{{ section.settings.section_title }}</h2>
+        <div class="sliders">
+            {% for block in section.blocks %}
+              <div class="image-text-slider">
+                  <div class="image-text">
+                      {% if block.settings.image != blank %}
+                      <div class="image">
+                          <img src="{{  block.settings.image | img_url: "master" }}">
+                      </div>
+                      {% endif %}
+                      <div class="text">
+                          <h3>{{ block.settings.title }}</h3>
+                          {{ block.settings.info }}
+                          <a href="{{ block.settings.button_link }}">{{ block.settings.button_text }}</a>
+                      </div>
+                  </div>
+              </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% schema %}
+{
+    "name": "Image text slider",
+    "settings": [
+        {
+            "id" : "section_title",
+            "type" : "text",
+            "label" : "Section Title"
+        }
+    ],
+    "blocks": [
+        {
+            "type":"select",
+            "name":"text",
+            "settings":[
+                {
+                    "id" : "image",
+                    "type" : "image_picker",
+                    "label" : "Image"
+                },
+                {
+                    "id" : "title",
+                    "type" : "text",
+                    "label" : "Title"
+                },
+                {
+                    "id" : "info",
+                    "type" : "richtext",
+                    "label" : "Information"
+                },
+                {
+                    "id" : "button_text",
+                    "type" : "text",
+                    "label" : "Button Text"
+                },
+                {
+                    "id" : "button_link",
+                    "type" : "url",
+                    "label" : "Button Link"
+                }
+            ]
+        } 
+    ],
+    "presets": [
+        {
+            "name": "Image text slider",
+            "category": "Text"
+        }
+    ]
+}
+{% endschema %}
